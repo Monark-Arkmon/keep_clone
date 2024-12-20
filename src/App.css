@@ -1,0 +1,108 @@
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* For Note Opening */
+.note-open {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* For Archive/Delete Buttons */
+.archive-delete-click {
+  animation: bounceOut 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.archive-delete-click:active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1); /* Light grey color */
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 0.6s linear;
+}
+
+@keyframes bounceOut {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.9);
+  }
+}
+
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
+
+/* For Navbar Options */
+.navbar-click {
+  animation: pulse 0.3s ease-in-out;
+  text-decoration: none;
+  color: #5F6368; /* Your desired default color */
+  font-weight: bold;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* Remove default link styles */
+a {
+  text-decoration: none;
+  color: inherit; /* Ensures it inherits from parent */
+}
+
+/* For Navbar Links */
+.navbar-link {
+  text-decoration: none;
+  color: #5F6368; /* Your desired default color */
+  font-weight: bold;
+}
+
+
+
