@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import { 
   Box, Grid, Card, CardContent, CardActions, Typography,
@@ -562,25 +562,21 @@ const DataProvider = ({ children }) => {
     </DataContext.Provider>
   );
 };
-const App = () => {
-  const Home = () => {
-    return (
-        <Box style={{ display: 'flex', width: '100%' }}>
-            <Router>
-                <SwipeDrawer />
-                <Routes>        
-                    <Route path='/' element={<Notes />} />
-                    <Route path='/archive' element={<Archives />} />
-                    <Route path='/delete' element={<DeleteNotes />} />
-                </Routes>
-            </Router>
-        </Box>
-    )
-}
 
+const App = () => {
   return (
     <DataProvider>
-      <Home />
+      <Router>
+        <SwipeDrawer />
+        <Box className="main-content">
+          <Routes>
+            <Route path="/" element={<Notes />} />
+            <Route path="/archive" element={<Archives />} />
+            <Route path="/delete" element={<DeleteNotes />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Box>
+      </Router>
     </DataProvider>
   );
 };
