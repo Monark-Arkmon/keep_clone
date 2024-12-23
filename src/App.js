@@ -251,72 +251,71 @@ const EditNoteModal = ({ note, open, handleClose, onSave }) => {
   );
 };
 
-const Note = ({ note }) => {
-  const { notes, setNotes, setAcrchiveNotes, setDeleteNotes } = useContext(DataContext);
-  const [openEdit, setOpenEdit] = useState(false);
+  const Note = ({ note }) => {
+    const { notes, setNotes, setAcrchiveNotes, setDeleteNotes } = useContext(DataContext);
+    const [openEdit, setOpenEdit] = useState(false);
 
-  const archiveNote = (note) => {
-    const updatedNotes = notes.filter(data => data.id !== note.id);
-    setNotes(updatedNotes);
-    setAcrchiveNotes(prevArr => [note, ...prevArr]);
-  };
+    const archiveNote = (note) => {
+      const updatedNotes = notes.filter(data => data.id !== note.id);
+      setNotes(updatedNotes);
+      setAcrchiveNotes(prevArr => [note, ...prevArr]);
+    };
 
-  const deleteNote = (note) => {
-    const updatedNotes = notes.filter(data => data.id !== note.id);
-    setNotes(updatedNotes);
-    setDeleteNotes(prevArr => [note, ...prevArr]);
-  };
+    const deleteNote = (note) => {
+      const updatedNotes = notes.filter(data => data.id !== note.id);
+      setNotes(updatedNotes);
+      setDeleteNotes(prevArr => [note, ...prevArr]);
+    };
 
-  const handleEdit = () => {
-    setOpenEdit(true);
-  };
+    const handleEdit = () => {
+      setOpenEdit(true);
+    };
 
-  const handleClose = () => {
-    setOpenEdit(false);
-  };
+    const handleClose = () => {
+      setOpenEdit(false);
+    };
 
-  const saveEditedNote = (editedNote) => {
-    const updatedNotes = notes.map(n => 
-      n.id === editedNote.id ? editedNote : n
+    const saveEditedNote = (editedNote) => {
+      const updatedNotes = notes.map(n => 
+        n.id === editedNote.id ? editedNote : n
+      );
+      setNotes(updatedNotes);
+    };
+
+    return (
+      <>
+        <StyledCard onClick={handleEdit} className="note-open">
+          <CardContent>
+            <Typography>{note.heading}</Typography>
+            <Typography>{note.text}</Typography>
+          </CardContent>
+          <CardActions>
+            <Archive 
+              className="archive-delete-click button-hover"
+              onClick={(e) => {
+                e.stopPropagation();
+                archiveNote(note);
+              }}
+            />
+            <Delete 
+              className="archive-delete-click button-hover"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteNote(note);
+              }}
+            />
+          </CardActions>
+        </StyledCard>
+
+        <EditNoteModal
+          note={note}
+          open={openEdit}
+          handleClose={handleClose}
+          onSave={saveEditedNote}
+        />
+      </>
     );
-    setNotes(updatedNotes);
   };
-
-  return (
-    <>
-      <StyledCard onClick={handleEdit} className="note-open">
-        <CardContent>
-          <Typography>{note.heading}</Typography>
-          <Typography>{note.text}</Typography>
-        </CardContent>
-        <CardActions>
-        <Archive 
-          className="archive-delete-click"
-          onClick={(e) => {
-            e.stopPropagation();
-            archiveNote(note);
-          }}
-          />
-          <Delete 
-          className="archive-delete-click"
-          onClick={(e) => {
-            e.stopPropagation();
-            deleteNote(note);
-          }}
-          />
-        </CardActions>
-      </StyledCard>
-
-      <EditNoteModal
-        note={note}
-        open={openEdit}
-        handleClose={handleClose}
-        onSave={saveEditedNote}
-      />
-    </>
-  );
-};
-
 const Form = () => {
   const [showTextField, setShowTextField] = useState(false);
   const [addNote, setAddNote] = useState({ id: uuid(), heading: '', text: '' });
@@ -429,46 +428,48 @@ const Notes = () => {
             </Droppable>
           </DragDropContext>
         ) : <EmptyNotes />}
+        </Box>
       </Box>
-    </Box>
-  );
-};
-
-const ArchivedNote = ({ archive }) => {
-  const { archiveNotes, setNotes, setAcrchiveNotes, setDeleteNotes } = useContext(DataContext);
-
-  const unArchiveNote = (archive) => {
-    const updatedNotes = archiveNotes.filter(data => data.id !== archive.id);
-    setAcrchiveNotes(updatedNotes);
-    setNotes(prevArr => [archive, ...prevArr]);
+    );
   };
 
-  const deleteNote = (archive) => {
-    const updatedNotes = archiveNotes.filter(data => data.id !== archive.id);
-    setAcrchiveNotes(updatedNotes);
-    setDeleteNotes(prevArr => [archive, ...prevArr]);
-  };
+  const ArchivedNote = ({ archive }) => {
+    const { archiveNotes, setNotes, setAcrchiveNotes, setDeleteNotes } = useContext(DataContext);
 
-  return (
-    <StyledCard>
-      <CardContent>
-        <Typography>{archive.heading}</Typography>
-        <Typography>{archive.text}</Typography>
-      </CardContent>
-      <CardActions>
-        <Unarchive 
-          fontSize="small" 
-          style={{ marginLeft: 'auto' }} 
-          onClick={() => unArchiveNote(archive)}
-        />
-        <Delete 
-          fontSize="small"
-          onClick={() => deleteNote(archive)}
-        />
-      </CardActions>
-    </StyledCard>
-  );
-};
+    const unArchiveNote = (archive) => {
+      const updatedNotes = archiveNotes.filter(data => data.id !== archive.id);
+      setAcrchiveNotes(updatedNotes);
+      setNotes(prevArr => [archive, ...prevArr]);
+    };
+
+    const deleteNote = (archive) => {
+      const updatedNotes = archiveNotes.filter(data => data.id !== archive.id);
+      setAcrchiveNotes(updatedNotes);
+      setDeleteNotes(prevArr => [archive, ...prevArr]);
+    };
+
+    return (
+      <StyledCard>
+        <CardContent>
+          <Typography>{archive.heading}</Typography>
+          <Typography>{archive.text}</Typography>
+        </CardContent>
+        <CardActions>
+          <Unarchive 
+            fontSize="small" 
+            style={{ marginLeft: 'auto' }} 
+            onClick={() => unArchiveNote(archive)}
+            className="button-hover"
+          />
+          <Delete 
+            fontSize="small"
+            onClick={() => deleteNote(archive)}
+            className="button-hover"
+          />
+        </CardActions>
+      </StyledCard>
+    );
+  };
 
 // Update the Archives component to use ArchivedNote
 const Archives = () => {
@@ -534,10 +535,12 @@ const DeleteNote = ({ deleteNote }) => {
           fontSize="small" 
           style={{ marginLeft: 'auto' }} 
           onClick={() => removeNote(deleteNote)}
+          className="button-hover"
         />
         <Restore
           fontSize="small"
           onClick={() => restoreNote(deleteNote)}
+          className="button-hover"
         />
       </CardActions>
     </StyledCard>
